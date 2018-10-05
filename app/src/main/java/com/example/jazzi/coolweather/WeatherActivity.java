@@ -123,10 +123,11 @@ public class WeatherActivity extends AppCompatActivity {
             * 原因：第一次只要有缓存就直接加载了
             * 解决方案：判断缓存与用户选择是否一致，一致，则加载缓存
             * 不一致，则从服务器更新即可*/
-            if(weather.basic.weatherId==getIntent().getStringExtra("weather_id")){
+            if(weather.basic.weatherId==getIntent().getStringExtra("weather_id")||MainActivity.usedByOpen==true){
                 /*获得缓存那边的气候id*/
                 mWeatherId=weather.basic.weatherId;
                 showWeatherInfo(weather);
+                MainActivity.usedByOpen=false;
             }else{
                 /*相当于无缓存时取服务器查询天气*/
                 mWeatherId=getIntent().getStringExtra("weather_id");
