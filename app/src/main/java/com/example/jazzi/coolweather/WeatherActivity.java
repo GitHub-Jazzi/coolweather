@@ -1,5 +1,6 @@
 package com.example.jazzi.coolweather;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.Image;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.jazzi.coolweather.gson.Forecast;
 import com.example.jazzi.coolweather.gson.Weather;
+import com.example.jazzi.coolweather.service.AutoUpdateService;
 import com.example.jazzi.coolweather.util.HttpUtil;
 import com.example.jazzi.coolweather.util.Utility;
 
@@ -116,9 +118,22 @@ public class WeatherActivity extends AppCompatActivity {
             /*有缓存时直接解析天气数据*/
             Weather weather= Utility.handleWeatherResponse(weatherString);
 
-            /*获得缓存那边的气候id*/
-            mWeatherId=weather.basic.weatherId;
-            showWeatherInfo(weather);
+            /*第一行代码出错
+            * 错点：每次在主活动进入气候信息活动时，会自动载入缓存中的数据，而不是用户选的weatherId数据
+            * 原因：第一次只要有缓存就直接加载了
+            * 解决方案：判断缓存与用户选择是否一致，一致，则加载缓存
+            * 不一致，则从服务器更新即可*/
+            if(weather.basic.weatherId==getIntent().getStringExtra("weather_id")){
+                /*获得缓存那边的气候id*/
+                mWeatherId=weather.basic.weatherId;
+                showWeatherInfo(weather);
+            }else{
+                /*相当于无缓存时取服务器查询天气*/
+                mWeatherId=getIntent().getStringExtra("weather_id");
+                weatherLayout.setVisibility(View.INVISIBLE);
+                requestWeather(mWeatherId);
+            }
+
 
         }else{
             /*无缓存时取服务器查询天气*/
@@ -246,6 +261,11 @@ public class WeatherActivity extends AppCompatActivity {
 
 
     private void showWeatherInfo(Weather weather){
+
+        /*启动后台更新服务*/
+        Intent intent=new Intent(this, AutoUpdateService.class);
+        startService(intent);
+
         /*获取各种信息*/
         String cityName=weather.basic.cityName;
         String updateTime=weather.basic.update.updateTime.split(" ")[1];

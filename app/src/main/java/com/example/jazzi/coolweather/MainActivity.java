@@ -19,11 +19,11 @@ public class MainActivity extends AppCompatActivity {
         * 就直接显示天气信息，无需再选择城市了
         * 开始WeatherActivity活动
         * 关闭当前活动*/
-//        SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(this);
-//        if(prefs.getString("weather",null)!=null){
-//            Intent intent=new Intent(this,WeatherActivity.class);
-//            startActivity(intent);
-//            finish();
-//        }
+        SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(this);
+        if(prefs.getString("weather",null)!=null){
+            Intent intent=new Intent(this,WeatherActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 }
