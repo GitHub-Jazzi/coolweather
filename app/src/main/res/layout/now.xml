@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_margin="15dp">
+
+    <!--layout_gravity="end"表示在只有在vertical时生效
+        表示排列在水平位置的最后，即最右边
+        一个显示当前气温，一个显示天气概况-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/degree_text"
+        android:layout_gravity="end"
+        android:textColor="#fff"
+        android:textSize="60sp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/weather_info_text"
+        android:layout_gravity="end"
+        android:textColor="#fff"
+        android:textSize="20sp"/>
+
+</LinearLayout>

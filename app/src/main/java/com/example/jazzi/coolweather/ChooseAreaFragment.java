@@ -2,6 +2,7 @@ package com.example.jazzi.coolweather;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -102,6 +103,17 @@ public class ChooseAreaFragment extends Fragment {
                 }else  if(currentLevel==LEVEL_CITY){
                     selectedCity=cityList.get(i);
                     queryCounties();
+                }else if(currentLevel==LEVEL_COUNTY){
+                    /*获得当前conty对象后，获得其Id属性
+                    * 新建一个Intent对象，上一个活动是本活动，下一个活动是WeatherActivity
+                    * 向intent中加入weatherId数据，并起了一个标签名叫"weather_id"
+                    * 开始下一个活动
+                    * 关闭这个活动*/
+                    String weatherId=countyList.get(i).getWeatherId();
+                    Intent intent=new Intent(getActivity(),WeatherActivity.class);
+                    intent.putExtra("weather_id",weatherId);
+                    startActivity(intent);
+                    getActivity().finish();
                 }
             }
         });
