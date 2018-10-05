@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+
+
 <!--由于FrameLayout会将控件默认放在左上角，所以ScrollView会默认挡住ImageView
     从而ImageView会成为背景图片了-->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -18,30 +20,58 @@
         android:scaleType="centerCrop"
         android:id="@+id/bing_pic_img"/>
 
-    <!--实现ScrollView滚动条的隐藏
-        关闭《当滑动到边界的时候，如果再滑动，就会触发这个效果，产生渐变》 这个效果-->
-    <ScrollView
+
+    <!--DrawerLayout用于添加滑动菜单
+        第一个子控件作为屏幕中显示的内容
+        第二个子控件作为滑动菜单中显示内容-->
+    <android.support.v4.widget.DrawerLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/weather_layout"
-        android:scrollbars="none"
-        android:overScrollMode="never">
+        android:id="@+id/drawer_layout">
 
-        <!--滑动布局的内布局-->
-        <!--fitsSystemWindows="true"即为系统状态栏留出一些界面空间-->
-        <LinearLayout
+        <!--实现刷新的布局-->
+        <android.support.v4.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:fitsSystemWindows="true">
+            android:layout_height="match_parent"
+            android:id="@+id/swipe_refresh">
+            <!--实现ScrollView滚动条的隐藏
+            关闭《当滑动到边界的时候，如果再滑动，就会触发这个效果，产生渐变》 这个效果-->
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/weather_layout"
+                android:scrollbars="none"
+                android:overScrollMode="never">
 
-            <include layout="@layout/title"/>
-            <include layout="@layout/now"/>
-            <include layout="@layout/forecast"/>
-            <include layout="@layout/aqi"/>
-            <include layout="@layout/suggestion"/>
+                <!--滑动布局的内布局-->
+                <!--fitsSystemWindows="true"即为系统状态栏留出一些界面空间-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:fitsSystemWindows="true">
 
-        </LinearLayout>
+                    <include layout="@layout/title"/>
+                    <include layout="@layout/now"/>
+                    <include layout="@layout/forecast"/>
+                    <include layout="@layout/aqi"/>
+                    <include layout="@layout/suggestion"/>
 
-    </ScrollView>
+                </LinearLayout>
+            </ScrollView>
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <!--这是碎片，即name对应的是开启的活动名称
+            layout_gravity是该控件相对父布局的位置
+            start则是依据国家习俗变换，默认是左边-->
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/choose_area_fragment"
+            android:name="com.example.jazzi.coolweather.ChooseAreaFragment"
+            android:layout_gravity="start"/>
+
+    </android.support.v4.widget.DrawerLayout>
+
+
 </FrameLayout>

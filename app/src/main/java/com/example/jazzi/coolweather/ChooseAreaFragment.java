@@ -104,16 +104,33 @@ public class ChooseAreaFragment extends Fragment {
                     selectedCity=cityList.get(i);
                     queryCounties();
                 }else if(currentLevel==LEVEL_COUNTY){
-                    /*获得当前conty对象后，获得其Id属性
-                    * 新建一个Intent对象，上一个活动是本活动，下一个活动是WeatherActivity
-                    * 向intent中加入weatherId数据，并起了一个标签名叫"weather_id"
-                    * 开始下一个活动
-                    * 关闭这个活动*/
+                    /*得当前conty对象后，获得其Id属性*/
                     String weatherId=countyList.get(i).getWeatherId();
-                    Intent intent=new Intent(getActivity(),WeatherActivity.class);
-                    intent.putExtra("weather_id",weatherId);
-                    startActivity(intent);
-                    getActivity().finish();
+
+                    /*判断当前活动是否在MainActivity或者WeatherActivity活动中
+                    * 即判断是在滑动菜单中还是退出了滑动菜单在气候信息界面中*/
+                    if(getActivity() instanceof  MainActivity){
+                        /* 新建一个Intent对象，上一个活动是本活动，下一个活动是WeatherActivity
+                         * 向intent中加入weatherId数据，并起了一个标签名叫"weather_id"
+                         * 开始下一个活动
+                         * 关闭这个活动*/
+
+                        Intent intent=new Intent(getActivity(),WeatherActivity.class);
+                        intent.putExtra("weather_id",weatherId);
+                        /*点击后自动关闭自己，回到气候信息的活动*/
+                        startActivity(intent);
+                        getActivity().finish();
+                    }else if(getActivity() instanceof WeatherActivity){
+                        /*获得WeatherActivity活动对象
+                        * 关闭滑动菜单
+                        * 显示刷新进度条
+                        * 根据在菜单中选择传来的weatherId更新气候信息*/
+                        WeatherActivity activity=(WeatherActivity) getActivity();
+                        activity.drawerLayout.closeDrawers();
+                        activity.swipeRefresh.setRefreshing(true);
+                        activity.requestWeather(weatherId);
+                    }
+
                 }
             }
         });
